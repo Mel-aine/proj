@@ -9,7 +9,7 @@ const Commandes = Db.define('Commandes', {
         autoIncrement: true,
         allowNull: false,
     },
-    id_utilisateur: {
+    id_owner: {
         type: DataTypes.INTEGER.UNSIGNED,
        
         allowNull: false,

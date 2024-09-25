@@ -1,54 +1,9 @@
 const express = require('express')
-const user = require ('../models/user')
+const User = require ('../orm/models/user')
 
-
-
-
+const bcrypt = require('bcrypt');
 
 let router = express.Router()
-
-
-
-/*router.get('/', async (req, res) => {
-    user.findAll()
-    .then(users => res.json({data : users}))
-    .catch(err => res.status(500).json({message :'database error',error : err}))
-})
-
-router.post('/api/form',  (req, res) => {
-
-const { id_utilisateurs,firstname,lastname, email,phone,address, password } = req.body;
-    req.getConnection((erreur , connection) =>{
-        if(erreur){
-            console.log(erreur);
-        }else{
-            connection.query('INSERT INTO utilisateurs(id_utilisateurs,firstname,lastname, email,phone,address, password) VALUES (?,?,?,?,?,?)',[null,firstname,lastname, email,phone,address, password],(erreur,resultat)=>{
-                if(erreur){ 
-                console.log(erreur);
-                res.status(500).send({message:'erreur lors de l insertion'})
-                }else{
-                //res.status(300).redirect("/");//redirection avec le status de redirection
-                res.status(200).send({message:'Données enregistrées avec succès!'});
-                }
-            })
-                    
-            }   
-            })
-
-
-})
-
-router.get('/:id', async (req, res) => {})
-
-router.put('/:id', async (req, res) => {})
-
-router.delete('/:id', async (req, res) => {})
-
-// Create user
-
-
-module.exports = router*/
-
 
 
 const port = 3000;
@@ -61,27 +16,143 @@ app.use(cors());
 //app.use(bodyParser.json());
 app.use(express.json()); // Pour parser le JSON
 
-router.post('/api/form',  (req, res) => {
-    const { Nom, Email ,Id_utilisateurs,Prenom ,Telephone, Password } = req.body;
-    req.getConnection((erreur , connection) =>{
-        if(erreur){
-            console.log(erreur);
-        }else{
-            connection.query('INSERT INTO utilisateurs(Id_utilisateurs,Nom,Prenom, Email,Telephone, Password) VALUES (?,?,?,?,?,?)',[null,Nom,Prenom, Email,Telephone, Password],(erreur,resultat)=>{
-                if(erreur){ 
-                console.log(erreur);
-                res.status(500).send({message:'erreur lors de l insertion'})
-                }else{
-                //res.status(300).redirect("/");//redirection avec le status de redirection
-                res.status(200).send({message:'Données enregistrées avec succès!'});
-                }
-            })
-                    
-            }   
-            })
-        //}
-    //})
+router.post('/form',  async (req, res) => {
+    const { FirstName, Email ,Address,LastName ,Phone, Password } = req.body;
+    // Validation des entrées
+    if (!Email || !Password || !FirstName ||!LastName || !Phone || !Address ) {
+        return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
+    }
+    try{
+        const u=await User.create({ 
+            firstname: FirstName,
+            lastname: LastName,
+            address: Address,
+            phone: Phone,
+            email: Email,
+            password: Password,
+     })
+        console.log(u)
+        res.status(201).json({ message: "Inscription réussie", data: u });
+    }
+    catch(err){
+        res.status(500).json({message: 'Erreur de la base de données', error: err.message})
+    }
+    
+    /*console.log('launch user creation...')
+    await User.create({ 
+        firstname: FirstName,
+        lastname: LastName,
+        address: Address,
+        phone: Phone,
+        email: Email,
+        password: Password,
+     })
+    .then(u => {
+        console.log('user created')
+       // res.json({data : u})
+        res.json({ message:"Inscription réussie"})
+    
+    
+    
+    })
+    .catch(err => res.status(500).json({Message :'database error',error : err}))*/
+    
+    console.log('Fin de la création de l’utilisateur...')
+    
 })
+
+
+router.get('/connect',  async (req, res) => {
+    
+    console.log('launch user retrieve...')
+    await User.findAll(
+        {
+            attributes: ['email', 'password']
+          }
+    )
+    .then(users => {
+        console.log('users retrieved')
+        //res.json({data :users})
+
+        for (let i = 0; i < users.length; i++) {
+           const element = users[i];
+           res.json({data :element})
+           
+        }
+
+
+    })
+    .catch(err => res.status(500).json({message :'database error',error : err}))
+    console.log('end...')
+    
+})
+
+/*router.post('/login',  async (req, res) => { 
+    const {  Email , Password } = req.body;
+
+    if (!Email) {
+        return res.status(400).json({message: 'veuillez renseigner tous les champs'})
+    }
+        
+User.findOne({ where: { Email} })
+.then( user => {
+//verification de l utilsateur
+        if (user == null) {
+     return res.status(404).json({message:'utilsateur non trouvé'})
+} 
+//verification du mot de pass
+  if (user.password !== Password) {
+     return res.status(401).json({message:'Mot de passe incorrect'})
+  }
+
+   res.json({data:user})
+  
+  
+
+
+
+})
+        
+.catch(err => res.status(500).json({message:'Database Error',error : err})) 
+        
+    
+});*/
+
+
+router.post('/login', async (req, res) => {
+    const { Email, Password } = req.body;
+
+    // Validation des entrées
+    console.log(req.body)
+    if (!Email || !Password) {
+        return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
+    }
+
+    try {
+        // Recherche de l'utilisateur
+        const user = await User.findOne({ where: { Email } });
+
+        // Vérification de l'utilisateur
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+
+        // Vérification du mot de passe
+       // const isPasswordValid = await bcrypt.compare(Password, user.password);
+        //if (!isPasswordValid) 
+        if (user.password !== Password)  {
+            return res.status(401).json({ message: 'Mot de passe incorrect' });
+        }
+
+        // Connexion réussie
+        res.json({ data: user });
+    } catch (err) {
+        res.status(500).json({ message: 'Erreur de base de données', error: err });
+    }
+});
+
+
+
 
 module.exports = router;
 

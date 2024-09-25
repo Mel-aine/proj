@@ -1,12 +1,12 @@
 const express = require('express')
 
-const lignes = require ('../orm/models/ligneCommande')
+const horaires = require ('../orm/models/horaire')
 
 let router = express.Router()
 
 router.get('/', async (req, res) => {
-    lignes.findAll()
-    .then(users => res.json({data : users}))
+    horaires.findAll()
+    .then(horaires => res.json({data : horaires}))
     .catch(err => res.status(500).json({message :'database error',error : err}))
 })
 
@@ -18,7 +18,6 @@ router.put('/:id', async (req, res) => {})
 
 router.delete('/:id', async (req, res) => {})
 
-// Create user
 
 
 module.exports = router

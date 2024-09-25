@@ -2,7 +2,7 @@ const { DataTypes } = require ('sequelize');
 let Db = require ("../db.js");
 
 const Lignes = Db.define('Lignes', {
-    id_utilisateur: {
+    id_ligne: {
         type: DataTypes.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,

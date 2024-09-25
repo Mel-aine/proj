@@ -1,6 +1,6 @@
 const express = require('express')
 
-const menus = require ('../models/menu')
+const menus = require ('../orm/models/menu')
 
 let router = express.Router()
 

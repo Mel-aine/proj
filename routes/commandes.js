@@ -1,6 +1,6 @@
 const express = require('express')
 
-const commandes = require ('../models/commande')
+const commandes = require ('../orm/models/commande')
 
 let router = express.Router()
 
