@@ -39,27 +39,12 @@ const Restaurants = Db.define('Restaurants', {
         
     
     },
-    firstname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        
-    },
-    lastname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        
-    },
     email: {
         type: DataTypes.STRING,
         validate :{
             isEmail: true
         },
         unique :  true
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        
     },
     service: {
         type: DataTypes.STRING,

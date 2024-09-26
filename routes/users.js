@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require ('../orm/models/user')
+const UserController = require ('../controllers/users')
 
 const bcrypt = require('bcrypt');
 
@@ -23,14 +24,7 @@ router.post('/form',  async (req, res) => {
         return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
     }
     try{
-        const u=await User.create({ 
-            firstname: FirstName,
-            lastname: LastName,
-            address: Address,
-            phone: Phone,
-            email: Email,
-            password: Password,
-     })
+        const u=await UserController.createUser({ FirstName,LastName,Address,Phone,Email,Password})
         console.log(u)
         res.status(201).json({ message: "Inscription réussie", data: u });
     }
@@ -74,11 +68,7 @@ router.get('/connect',  async (req, res) => {
         console.log('users retrieved')
         //res.json({data :users})
 
-        for (let i = 0; i < users.length; i++) {
-           const element = users[i];
-           res.json({data :element})
-           
-        }
+        res.json({data :users})
 
 
     })

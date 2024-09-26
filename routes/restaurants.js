@@ -2,10 +2,12 @@ const express = require('express')
 const multer = require('multer');
 const path = require('path');
 const Restaurant = require ('../orm/models/restaurant')
-
+const restaurantController = require('../controllers/restaurant')
+const userController = require('../controllers/users')
 let router = express.Router()
 
 const cors = require('cors');
+const { log } = require('console');
     const app = express();
     
     
@@ -46,7 +48,7 @@ router.post('/form', upload.single('logo'), async (req, res) => {
 
         router.post('/form',  async (req, res) => {
        // Récupérer les données du formulaire
-          const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name,id_proprio} = req.body;
+          const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name} = req.body;
           console.log(req.body)
           
           // Validation des entrées
@@ -54,27 +56,12 @@ router.post('/form', upload.single('logo'), async (req, res) => {
             //  return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
           //}
           try{
-
-          
-              const newRestaurant =await Restaurant.create({ 
-                  firstname: FirstName,
-                  lastname: LastName,
-                  address: Address,
-                  phone: Phone,
-                  email: Email,
-                  password: Password,
-                  service : Service,
-                  website : Website,
-                  name : Name,
-
-                  id_proprio , 
-                  //logo: req.file.path, // Stockage du chemin de l'image dans la base de données
-
-
-                  
-           })
-              console.log(newRestaurant)
-              res.status(201).json({ message: "Enregistrement  réussie", data: newRestaurant });
+            const proprio = await userController.createUser({ FirstName, LastName, Email, Password, Address, Phone });
+            const id_proprio=proprio.id_utilisateur;
+            log(id_proprio)
+            const restaurant = await restaurantController.createRestaurant({Address, Phone, Service, Website, Name, id_proprio});
+            console.log(restaurant)
+            res.status(201).json({ message: "Enregistrement  réussie00", data: restaurant });
           }
           catch(err){
               res.status(500).json({message: 'Erreur de la base de données', error: err.message})
