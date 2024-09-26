@@ -12,6 +12,7 @@ const Restaurants = Db.define('Restaurants', {
         type: DataTypes.INTEGER.UNSIGNED,
         
         allowNull: false,
+        
     },
     logo: {
         type: DataTypes.BLOB,
@@ -35,10 +36,7 @@ const Restaurants = Db.define('Restaurants', {
     },
     website: {
         type: DataTypes.STRING,
-        validate :{
-            isEmail: true
-        },
-        unique :  true
+        
     
     },
     firstname: {
@@ -46,7 +44,7 @@ const Restaurants = Db.define('Restaurants', {
         allowNull: false,
         
     },
-    laststname: {
+    lastname: {
         type: DataTypes.STRING,
         allowNull: false,
         
@@ -56,8 +54,7 @@ const Restaurants = Db.define('Restaurants', {
         validate :{
             isEmail: true
         },
-        unique :true
-    
+        unique :  true
     },
     password: {
         type: DataTypes.STRING,

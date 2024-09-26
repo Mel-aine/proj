@@ -6,7 +6,7 @@ const connect=async ()=>{
     await Db.authenticate()
     console.log("database connection ok")
     all_relation.define();
-    await Db.sync({/* alter: true*/ });
+    await Db.sync({ /*force : true*/ });
     console.log('Database connected successfully')
     
 }

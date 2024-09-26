@@ -1,7 +1,7 @@
 const express = require('express')
 const multer = require('multer');
 const path = require('path');
-const restaurants = require ('../orm/models/restaurant')
+const Restaurant = require ('../orm/models/restaurant')
 
 let router = express.Router()
 
@@ -45,13 +45,18 @@ router.post('/form', upload.single('logo'), async (req, res) => {
 
 
         router.post('/form',  async (req, res) => {
-          const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name} = req.body;
+       // Récupérer les données du formulaire
+          const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name,id_proprio} = req.body;
+          console.log(req.body)
+          
           // Validation des entrées
-          if (!Email || !Password || !FirstName ||!LastName || !Phone || !Address || !Service || !Website || !Name ) {
-              return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
-          }
+          //if (!Email || !Password || !FirstName ||!LastName || !Phone || !Address || !Service || !Website || !Name ) {
+            //  return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
+          //}
           try{
-              const newrestaurant =await User.create({ 
+
+          
+              const newRestaurant =await Restaurant.create({ 
                   firstname: FirstName,
                   lastname: LastName,
                   address: Address,
@@ -61,9 +66,15 @@ router.post('/form', upload.single('logo'), async (req, res) => {
                   service : Service,
                   website : Website,
                   name : Name,
+
+                  id_proprio , 
+                  //logo: req.file.path, // Stockage du chemin de l'image dans la base de données
+
+
+                  
            })
-              console.log(u)
-              res.status(201).json({ message: "Enregistrement  réussie", data: newrestaurant });
+              console.log(newRestaurant)
+              res.status(201).json({ message: "Enregistrement  réussie", data: newRestaurant });
           }
           catch(err){
               res.status(500).json({message: 'Erreur de la base de données', error: err.message})
