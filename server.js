@@ -16,7 +16,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
-const PORT=process.env.port || 3002
+const PORT=process.env.port || 3001
 // Import routes
 const user_router = require('./routes/users')
 const cmd_router = require ('./routes/commandes')
@@ -24,6 +24,7 @@ const ligne_router = require ('./routes/lignes')
 const menu_router = require ('./routes/menus')
 const restaurant_router = require ('./routes/restaurants')
 const horaire_router = require ('./routes/horaires')
+const categorie_router = require ('./routes/categorie')
 
 
 // Define routes
@@ -35,6 +36,7 @@ app.use('/lignes',ligne_router)
 app.use('/menus',menu_router)
 app.use('/restaurants',restaurant_router)
 app.use('/horaires',horaire_router)
+app.use('/categorie',categorie_router)
 
 // Start server
 Dbi.connect()

@@ -17,7 +17,7 @@ app.use(cors());
 //app.use(bodyParser.json());
 app.use(express.json()); // Pour parser le JSON
 
-router.post('/form',  async (req, res) => {
+router.post('/form', async (req, res) => {
     const { FirstName, Email ,Address,LastName ,Phone, Password } = req.body;
     // Validation des entrées
     if (!Email || !Password || !FirstName ||!LastName || !Phone || !Address ) {

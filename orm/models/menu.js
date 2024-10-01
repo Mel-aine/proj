@@ -15,7 +15,7 @@ const Menus = Db.define('Menus', {
     },
     image: {
         type: DataTypes.BLOB,
-        allowNull: false,
+       // allowNull: false,
         
     },
     name: {
@@ -28,13 +28,18 @@ const Menus = Db.define('Menus', {
         allowNull: false,
         
     },
-    category: {
-        type: DataTypes.STRING,
+    id_categorie: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        
+    },
+    price: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         
     },
    
-   
+
    
 });
 
