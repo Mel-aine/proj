@@ -8,9 +8,7 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 const { log, error } = require('console');
-    const app = express();
-    
-    
+    const app = express();  
     // Middleware
     app.use(cors());
     app.use(bodyParser.json()); 
@@ -19,10 +17,10 @@ const { log, error } = require('console');
 
         router.post('/form',  async (req, res) => {
        // Récupérer les données du formulaire
-          const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name} = req.body;
+          const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name,Logo} = req.body;
           console.log(req.body)
           
-          if (!Email || !Password || !FirstName || !LastName || !Phone || !Address || !Service || !Website || !Name) {
+          if (!Email || !Password || !FirstName || !LastName || !Phone || !Address || !Service || !Website || !Name || !Logo) {
             return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
           }
           
@@ -30,7 +28,7 @@ const { log, error } = require('console');
             const proprio = await userController.createUser({ FirstName, LastName, Email, Password, Address, Phone });
             const id_proprio=proprio.id_utilisateur;
             log(id_proprio)
-            const restaurant = await restaurantController.createRestaurant({Address, Phone, Service, Website, Name, id_proprio});
+            const restaurant = await restaurantController.createRestaurant({Address, Phone, Service, Website, Name,Logo, id_proprio});
             console.log(restaurant)
             res.status(201).json({ message: "Enregistrement  réussie00", data: restaurant });
           }
@@ -44,12 +42,31 @@ const { log, error } = require('console');
       })
 
 
+      router.get('/connect',  async (req, res) => {
+        await Restaurant.findAll(
+            {
+                attributes: ['email', 'password']
+              }
+        )
+        .then(users => {
+            console.log('users retrieved')
+            //res.json({data :users})
+    
+            res.json({data :users})
+    
+    
+        })
+        .catch(err => res.status(500).json({message :'database error',error : err}))
+        console.log('end...')
+        
+    })
+    
 
 
 
-
-    router.get('/resto', async (req, res) => {
-        Restaurant.findAll({ attributes: { exclude: ['logo'] },})
+    router.get('/resto/', async (req, res) => {
+     // id = req.params.id
+        Restaurant.findAll({ })
       
         .then(restaurants => res.json({data : restaurants}))
        
@@ -58,6 +75,13 @@ const { log, error } = require('console');
         .catch(err => res.status(500).json({message :'database error',error : err?.parent?.sqlMessage|| err.message}))
     })
     
+
+    
+// Route pour obtenir un restaurant par ID
+router.get('/:id', async (req, res) => {
+  const restaurant = await Restaurant.findAll({});
+  res.json(restaurant);
+});
 
 
 

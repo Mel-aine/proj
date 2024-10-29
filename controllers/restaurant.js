@@ -1,7 +1,7 @@
 
 const restaurant = require ('../orm/models/restaurant')
 
-const createRestaurant= async({Address,Phone,Email,Service,Website,Name,id_proprio})=>{
+const createRestaurant= async({Address,Phone,Email,Service,Website,Name,Logo,id_proprio})=>{
 
     const u=await restaurant.create({ 
         address: Address,
@@ -10,6 +10,7 @@ const createRestaurant= async({Address,Phone,Email,Service,Website,Name,id_propr
         service : Service,
         website : Website,
         name : Name,
+        logo : Logo,
         id_proprio 
     })
     return u

@@ -9,7 +9,10 @@ const Categories = Db.define('Categories', {
         autoIncrement: true,
         allowNull: false,
     },
-    
+    id_restaurant: {
+        type: DataTypes.INTEGER.UNSIGNED,  
+        allowNull: false,
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,

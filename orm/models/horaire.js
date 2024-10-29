@@ -14,8 +14,8 @@ const Horaires = Db.define('Horaires', {
         
     },
     day: {
-        type: DataTypes.ENUM,
-        values : ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],
+        type: DataTypes.STRING,
+        //values : ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],
         
         allowNull: false,
     },

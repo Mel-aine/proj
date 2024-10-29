@@ -14,7 +14,7 @@ const Menus = Db.define('Menus', {
         allowNull: false,
     },
     image: {
-        type: DataTypes.BLOB,
+        type: DataTypes.TEXT,
        // allowNull: false,
         
     },
@@ -29,7 +29,7 @@ const Menus = Db.define('Menus', {
         
     },
     id_categorie: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         
     },

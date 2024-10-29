@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require ('../orm/models/user')
+const Restaurant = require ('../orm/models/restaurant')
 const UserController = require ('../controllers/users')
 
 const bcrypt = require('bcrypt');
@@ -77,36 +78,10 @@ router.get('/connect',  async (req, res) => {
     
 })
 
-/*router.post('/login',  async (req, res) => { 
-    const {  Email , Password } = req.body;
-
-    if (!Email) {
-        return res.status(400).json({message: 'veuillez renseigner tous les champs'})
-    }
-        
-User.findOne({ where: { Email} })
-.then( user => {
-//verification de l utilsateur
-        if (user == null) {
-     return res.status(404).json({message:'utilsateur non trouvé'})
-} 
-//verification du mot de pass
-  if (user.password !== Password) {
-     return res.status(401).json({message:'Mot de passe incorrect'})
-  }
-
-   res.json({data:user})
-  
-  
-
-
-
-})
-        
-.catch(err => res.status(500).json({message:'Database Error',error : err})) 
-        
+router.post('/log',  async (req, res) => { 
     
-});*/
+    
+})
 
 
 router.post('/login', async (req, res) => {
@@ -120,7 +95,7 @@ router.post('/login', async (req, res) => {
 
     try {
         // Recherche de l'utilisateur
-        const user = await User.findOne({ where: { Email } });
+        const user = await User.findOne({ where: { Email }, include: [Restaurant] });
 
         // Vérification de l'utilisateur
         if (!user) {

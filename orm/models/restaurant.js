@@ -15,7 +15,7 @@ const Restaurants = Db.define('Restaurants', {
         
     },
     logo: {
-        type: DataTypes.BLOB,
+        type: DataTypes.TEXT,
     
         
     },
