@@ -40,10 +40,6 @@ router.post('/form',  async (req, res) => {
     }
 });
 
-
-
-
-
 router.get('/:id', async (req, res) => {
     const categorieId = req.params.id ; // Récupérer l'ID de la catégorie...
     //const restaurantId = req.params.id; //
@@ -90,13 +86,45 @@ router.get('/:id/menu', async (req, res) => {
 })
 
 
+router.put('/:id', async (req, res) => {
+    const { image, name,description, price} = req.body;
 
 
-router.put('/:id', async (req, res) => {})
+    try {
+        const menu = await Menu.findByPk(req.params.id);
+        if (!menu) {
+            return res.status(404).send('Menu not found');
+        }
 
-router.delete('/:id', async (req, res) => {})
+        if (name !== undefined) menu.name = name;
+        if (image !== undefined) menu.image = image;
+        if (description !== undefined) menu.description = description;
+        if (price !== undefined) menu.price = price;
+        await menu.save();
+        res.json(menu);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-// Create user
+
+router.delete('/:id', async (req, res) => {
+    const menuId = req.params.id ; // Récupérer l'ID du menu...
+    try {
+        const menu = await Menu.findByPk(menuId);
+        if (!menu) {
+            return res.status(404).json({ message: 'Menu non trouvé' });
+        }
+        await menu.destroy();
+        res.status(200).json({ message: 'Menu supprimé avec succès' });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erreur lors de la suppression du menu.', error: error.message });
+    }
+})
+
+
 
 
 module.exports = router

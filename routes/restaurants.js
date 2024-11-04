@@ -86,15 +86,35 @@ router.get('/:id', async (req, res) => {
 
 
 
-
-
-
-
-
-
 router.get('/:id', async (req, res) => {})
 
-router.put('/:id', async (req, res) => {})
+router.put('/:id', async (req, res) => {
+    const { name, address, phone, website, email, service ,logo} = req.body;
+
+
+    try {
+        const restaurant = await Restaurant.findByPk(req.params.id);
+        if (!restaurant) {
+            return res.status(404).send('Restaurant not found');
+        }
+
+        if (name !== undefined) restaurant.name = name;
+        if (address !== undefined) restaurant.address = address;
+        if (phone !== undefined) restaurant.phone = phone;
+        if (website !== undefined) restaurant.website = website;
+        if (email !== undefined) restaurant.email = email;
+        if (service !== undefined) restaurant.service = service;
+        if (logo!== undefined) restaurant.logo = logo;
+
+
+        await restaurant.save();
+        res.json(restaurant);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 
 router.delete('/:id', async (req, res) => {})
 
