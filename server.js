@@ -29,19 +29,18 @@ const categorie_router = require ('./routes/categorie')
 
 // Define routes
 
-app.get('/', (req, res) => res.send ("i m online , welcome"))
-app.use('/users',user_router)
-app.use('/commandes',cmd_router)
-app.use('/lignes',ligne_router)
-app.use('/menus',menu_router)
-app.use('/restaurants',restaurant_router)
-app.use('/horaires',horaire_router)
-app.use('/categorie',categorie_router)
+app.use('/api/users',user_router)
+app.use('/api/commandes',cmd_router)
+app.use('/api/lignes',ligne_router)
+app.use('/api/menus',menu_router)
+app.use('/api/restaurants',restaurant_router)
+app.use('/api/horaires',horaire_router)
+app.use('/api/categorie',categorie_router)
 
 // Start server
 Dbi.connect()
 .then (()=>{
-    app.listen(+PORT, () => console.log(`Server is running on port ${PORT}`));
+    app.listen(3000, () => console.log(`Server is running on port ${3000}`));
 })
 
 .catch(err => console.log(`Error connecting to the database: ${err}`));
