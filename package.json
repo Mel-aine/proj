@@ -5,7 +5,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server.js",
-    "postinstall": "npm install",
     "dev": "kill -9 $(lsof -t -i:3001) && node server.js",
     "start": "nodemon --exec npm run dev"
   },
