@@ -2,7 +2,7 @@ const express = require ('express');
 const cors = require ('cors');
 const bodyParser = require('body-parser');
 
-let Dbi = require ("../orm/index.js");
+let Dbi = require ("./orm/index.js");
 
 const app = express();
 
@@ -18,13 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 const PORT=process.env.port || 3001
 // Import routes
-const user_router = require('../routes/users.js')
-const cmd_router = require ('../routes/commandes.js')
-const ligne_router = require ('../routes/lignes.js')
-const menu_router = require ('../routes/menus.js')
-const restaurant_router = require ('../routes/restaurants.js')
-const horaire_router = require ('../routes/horaires.js')
-const categorie_router = require ('../routes/categorie.js')
+const user_router = require('./routes/users.js')
+const cmd_router = require ('./routes/commandes.js')
+const ligne_router = require ('./routes/lignes.js')
+const menu_router = require ('./routes/menus.js')
+const restaurant_router = require ('./routes/restaurants.js')
+const horaire_router = require ('./routes/horaires.js')
+const categorie_router = require ('./routes/categorie.js')
 
 
 // Define routes
