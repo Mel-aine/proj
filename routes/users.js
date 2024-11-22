@@ -19,38 +19,22 @@ app.use(cors());
 app.use(express.json()); // Pour parser le JSON
 
 router.post('/form', async (req, res) => {
-    const { FirstName, Email ,Address,LastName ,Phone, Password } = req.body;
+    const {FirstName, Email ,Address,LastName ,Phone, Password ,Role} = req.body;
+    console.log('*******.',Role)
     // Validation des entrées
-    if (!Email || !Password || !FirstName ||!LastName || !Phone || !Address ) {
+    if (!Email || !Password || !FirstName ||!LastName || !Phone || !Address || !Role ) {
         return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
     }
     try{
-        const u=await UserController.createUser({ FirstName,LastName,Address,Phone,Email,Password})
+        const u=await UserController.createUser({ FirstName,LastName,Address,Phone,Email,Password,Role });
         console.log(u)
         res.status(201).json({ message: "Inscription réussie", data: u });
     }
     catch(err){
+       console.log("err", err); 
         res.status(500).json({message: 'Erreur de la base de données', error: err.message})
     }
     
-    /*console.log('launch user creation...')
-    await User.create({ 
-        firstname: FirstName,
-        lastname: LastName,
-        address: Address,
-        phone: Phone,
-        email: Email,
-        password: Password,
-     })
-    .then(u => {
-        console.log('user created')
-       // res.json({data : u})
-        res.json({ message:"Inscription réussie"})
-    
-    
-    
-    })
-    .catch(err => res.status(500).json({Message :'database error',error : err}))*/
     
     console.log('Fin de la création de l’utilisateur...')
     

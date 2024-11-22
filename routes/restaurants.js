@@ -17,20 +17,31 @@ const { log, error } = require('console');
 
         router.post('/form',  async (req, res) => {
        // Récupérer les données du formulaire
-          const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name,Logo} = req.body;
-          console.log(req.body)
+          // const { FirstName, Email ,Address,LastName ,Phone, Password ,Service,Website,Name,Logo} = req.body;
           
-          if (!Email || !Password || !FirstName || !LastName || !Phone || !Address || !Service || !Website || !Name || !Logo) {
-            return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
-          }
+          const {  UserEmail,Email ,Address ,Phone ,Service,Website,Name,Logo,Description} = req.body;
+           console.log(req.body)
+          // if (!Email || !Password || !FirstName || !LastName || !Phone || !Address || !Service || !Website || !Name || !Logo) {
+          //   return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
+          // }
+           if (!Email ||  !Phone || !Address || !Service || !Website || !Name || !Logo || !Description ||!UserEmail) {
+              return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
+            }
           
           try{
-            const proprio = await userController.createUser({ FirstName, LastName, Email, Password, Address, Phone });
-            const id_proprio=proprio.id_utilisateur;
-            log(id_proprio)
-            const restaurant = await restaurantController.createRestaurant({Address, Phone, Service, Website, Name,Logo, id_proprio});
+            // const proprio = await userController.createUser({ FirstName, LastName, Email, Password, Address, Phone });
+            // const id_proprio=proprio.id_utilisateur;
+            // log(id_proprio)
+             
+              const editorUser = await User.findOne({ where: { role: 'editor', email:UserEmail } });
+              if (!editorUser) {
+              return res.status(404).json({ message: 'Aucun utilisateur avec le rôle editor trouvé.' });
+              }
+
+            const id_proprio = editorUser.id_utilisateur
+            const restaurant = await restaurantController.createRestaurant({Address,Email, Phone, Service, Website, Name,Logo, id_proprio});
             console.log(restaurant)
-            res.status(201).json({ message: "Enregistrement  réussie00", data: restaurant });
+            res.status(201).json({ message: "Enregistrement  réussie", data: restaurant });
           }
           catch(err){
             error(err);
