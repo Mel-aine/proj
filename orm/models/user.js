@@ -9,6 +9,7 @@ const Users = Db.define('Users', {
         autoIncrement: true,
         allowNull: false,
     },
+    
     role: {
         type: DataTypes.ENUM('admin', 'editor', 'viewer'), 
         allowNull: false,

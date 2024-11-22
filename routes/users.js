@@ -20,14 +20,14 @@ app.use(express.json()); // Pour parser le JSON
 
 router.post('/form', async (req, res) => {
     const {FirstName, Email ,Address,LastName ,Phone, Password ,Role} = req.body;
-    console.log('*******.',Role)
+    console.log('******* req.body',req.body)
     // Validation des entrées
     if (!Email || !Password || !FirstName ||!LastName || !Phone || !Address || !Role ) {
         return res.status(400).json({ message: 'Veuillez renseigner tous les champs' });
     }
     try{
         const u=await UserController.createUser({ FirstName,LastName,Address,Phone,Email,Password,Role });
-        console.log(u)
+        console.log('@@@ u', u)
         res.status(201).json({ message: "Inscription réussie", data: u });
     }
     catch(err){
