@@ -18,13 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 const PORT=process.env.port || 3001
 // Import routes
-const user_router = require('./routes/users')
-const cmd_router = require ('./routes/commandes')
-const ligne_router = require ('./routes/lignes')
-const menu_router = require ('./routes/menus')
-const restaurant_router = require ('./routes/restaurants')
-const horaire_router = require ('./routes/horaires')
-const categorie_router = require ('./routes/categorie')
+const user_router = require('./routes/users.js')
+const cmd_router = require ('./routes/commandes.js')
+const ligne_router = require ('./routes/lignes.js')
+const menu_router = require ('./routes/menus.js')
+const restaurant_router = require ('./routes/restaurants.js')
+const horaire_router = require ('./routes/horaires.js')
+const categorie_router = require ('./routes/categorie.js')
 
 
 // Define routes
