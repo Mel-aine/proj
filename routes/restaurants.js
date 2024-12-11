@@ -127,7 +127,25 @@ router.put('/:id', async (req, res) => {
 
 
 
-router.delete('/:id', async (req, res) => {})
+router.delete('/:id', async (req, res) => {
+
+  const restaurantId = req.params.id ; 
+  try {
+      const restau = await Restaurant.findByPk(restaurantId);
+      console.log("restaurant", restau);
+      
+      if (!restau) {
+          return res.status(404).json({ message: 'restaurant  non trouvé' });
+      }
+      await restau.destroy();
+      res.status(200).json({ message: 'restaurant supprimé avec succès' });
+      
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Erreur lors de la suppression .', error: error.message });
+  }
+
+})
 
 // Create user
 

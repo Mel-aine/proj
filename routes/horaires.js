@@ -53,18 +53,22 @@ router.put('/:id', async (req, res) => {})
 router.delete('/:id', async (req, res) => {
     const horaireId = req.params.id ; 
     try {
-        const horaire = await horaire.findByPk(horaireId);
-        if (!horaire) {
+        const horair = await horaire.findByPk(horaireId);
+        console.log("Horaire", horair);
+        
+        if (!horair) {
             return res.status(404).json({ message: 'Horaire non trouvé' });
         }
-        await horaire.destroy();
+        await horair.destroy();
         res.status(200).json({ message: 'horaire supprimée avec succès' });
         
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Erreur lors de la suppression du menu.', error: error.message });
+        res.status(500).json({ message: 'Erreur lors de la suppression .', error: error.message });
     }
 })
+
+
 
 
 
